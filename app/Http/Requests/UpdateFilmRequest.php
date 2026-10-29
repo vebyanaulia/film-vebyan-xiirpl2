@@ -11,7 +11,7 @@ class UpdateFilmRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->user()?->role === 'admin';
     }
 
     /**
@@ -22,7 +22,11 @@ class UpdateFilmRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'sinopsis' => ['required', 'string', 'max:5000'],
+            'year' => ['required', 'integer', 'min:1888', 'max:2100'],
+            'poster' => ['required', 'string', 'max:2048'],
+            'genre_id' => ['required', 'integer', 'exists:genres,id'],
         ];
     }
 }

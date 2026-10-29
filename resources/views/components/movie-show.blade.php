@@ -117,21 +117,34 @@
         <div class="all-comments">
           <div class="all-comments-info">
             <a href="#">Comments</a>
-            <div class="agile-info-wthree-box">
-              <form>
-                <input type="text" placeholder="Name" required="">			           					   
-                <input type="text" placeholder="Email" required="">
-                <input type="text" placeholder="Phone" required="">
-                <textarea placeholder="Message" required=""></textarea>
-                <input type="submit" value="SEND">
-                <div class="clearfix"> </div>
-              </form>
-            </div>
+
+            @if (session('success'))
+              <div class="alert alert-success" style="margin-top: 15px;">{{ session('success') }}</div>
+            @endif
+
+            @auth
+              <div class="agile-info-wthree-box">
+                <form action="{{ route('comments.store', $film->id) }}" method="POST">
+                  @csrf
+                  <textarea name="comment" placeholder="Message / Komen" maxlength="500" required>{{ old('comment') }}</textarea>
+                  @error('comment')
+                    <p style="color: #d9534f; margin-bottom: 10px;">{{ $message }}</p>
+                  @enderror
+                  <input type="submit" value="SEND">
+                  <div class="clearfix"> </div>
+                </form>
+              </div>
+            @else
+              <div class="agile-info-wthree-box" style="padding: 15px 0;">
+                <p style="margin-bottom: 12px;">Login untuk berkomentar di film ini.</p>
+                <a href="{{ route('login', ['redirect' => url()->current()]) }}" class="btn btn-primary">Login untuk berkomentar</a>
+              </div>
+            @endauth
           </div>
           <div class="media-grids">
             @foreach ($comments as $comment)
               <div class="media">
-                <h5>{{ $comment->user_id }}</h5>
+                <h5>{{ $comment->user?->name ?? 'Pengguna tidak dikenal' }}</h5>
                 <div class="media-left">
                   <a href="#">
                     <img src="{{ asset('storage/images/user.jpg') }}" title="One movies" alt=" " />
@@ -139,6 +152,7 @@
                 </div>
                 <div class="media-body">
                   <p>{{ $comment->comment }}</p>
+                  <small style="color: #888;">{{ $comment->created_at?->diffForHumans() ?? $comment->created_at?->format('d M Y') }}</small>
                 </div>
               </div>
             @endforeach

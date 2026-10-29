@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Film;
 use App\Models\Kritik;
 use App\Http\Requests\StoreKritikRequest;
 use App\Http\Requests\UpdateKritikRequest;
@@ -27,9 +28,20 @@ class KritikController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreKritikRequest $request)
+    public function store(StoreKritikRequest $request, Film $film)
     {
-        //
+        $validated = $request->validated();
+
+        Kritik::create([
+            'comment' => $validated['comment'],
+            'rating' => 5,
+            'film_id' => $film->id,
+            'user_id' => auth()->id(),
+        ]);
+
+        return redirect()
+            ->route('movies.show', $film->id)
+            ->with('success', 'Komentar berhasil dikirim.');
     }
 
     /**

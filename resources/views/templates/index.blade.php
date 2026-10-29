@@ -30,6 +30,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</ul>
   </nav>
 </div>
+@if (session('success'))
+	<div class="container" style="margin-top: 15px;">
+		<div class="alert alert-success">{{ session('success') }}</div>
+	</div>
+@endif
 <!-- /w3l-medile-movies-grids -->
 @yield('content')
 	<!-- //comedy-w3l-agileits -->

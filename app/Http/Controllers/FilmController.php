@@ -60,7 +60,8 @@ class FilmController extends Controller
                         ->OrderBy('created_at', 'asc')
                         ->limit(9)
                         ->get();
-        $comments        = Kritik::select('comment', 'user_id')
+        $comments        = Kritik::with('user:id,name')
+                        ->select('id', 'comment', 'user_id', 'created_at')
                         ->where('film_id', '=', $film->id)
                         ->orderBy('created_at', 'asc')
                         ->limit(10)

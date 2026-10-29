@@ -1,0 +1,6 @@
+<div class="form-group"><label for="name">Nama</label><input class="form-control" id="name" name="name" value="{{ old('name', $user?->name) }}" required maxlength="255"></div>
+<div class="form-group"><label for="email">Email</label><input class="form-control" id="email" type="email" name="email" value="{{ old('email', $user?->email) }}" required maxlength="255"></div>
+<div class="form-group"><label for="role">Role</label><select class="form-control" id="role" name="role" required><option value="user" @selected(old('role', $user?->role ?? 'user') === 'user')>User</option><option value="admin" @selected(old('role', $user?->role) === 'admin')>Admin</option></select></div>
+<div class="form-group"><label for="password">Password{{ $user ? ' Baru (opsional)' : '' }}</label><input class="form-control" id="password" type="password" name="password" minlength="8" {{ $user ? '' : 'required' }}></div>
+<div class="form-group"><label for="password_confirmation">Konfirmasi Password</label><input class="form-control" id="password_confirmation" type="password" name="password_confirmation" minlength="8" {{ $user ? '' : 'required' }}></div>
+<div class="form-actions"><button class="btn btn-warning">Simpan</button> <a class="btn btn-default" href="{{ route('admin.users.index') }}">Batal</a></div>
